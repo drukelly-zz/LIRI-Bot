@@ -1,6 +1,7 @@
 const axios = require('axios')
 require('colors')
 require('dotenv').config()
+const fs = require('fs')
 const keys = require('./keys.js')
 const moment = require('moment')
 const Spotify = require('node-spotify-api')
@@ -73,6 +74,6 @@ switch (command) {
     console.log('doing!')
     break
   default :
-    console.log('⁉️ Which command is that? ⁉️')
+    console.log('⁉️  Which command is that? ⁉️')
     break
 }
