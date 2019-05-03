@@ -1,9 +1,9 @@
 const axios = require('axios')
 require('colors')
 require('dotenv').config()
-const moment = require('moment')
-const nodeSpotify = require('node-spotify-api')
 const keys = require('./keys.js')
+const moment = require('moment')
+const Spotify = require('node-spotify-api')
 
 let command = process.argv[2]
 let value = process.argv[3]
@@ -17,7 +17,7 @@ switch (command) {
     console.log('spotify!')
     break
   case 'movie-this' :
-    // value = value.replace(' ','+').toLowerCase()
+    value = value.replace(/ /g, '+').toLowerCase()
     let queryURL = `https://www.omdbapi.com/?t=${value}&plot=short&apikey=${keys.omdb.apikey}`
     axios.get(queryURL)
       .then(response => {
