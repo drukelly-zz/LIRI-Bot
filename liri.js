@@ -36,11 +36,11 @@ switch (command) {
         output signature for concert-this
         color coded magenta for events
         -------------------------------- */
-        output = `\n`
-        output += (`🎫  ${value.toUpperCase()}\n`.magenta)
-        output += (`🏟  ${venue}\n`.magenta)
-        output += (`🗓  ${convConcertDate}\n`.magenta)
-        console.log(output)
+        output = `🎫  ${value.toUpperCase()}\n🏟  ${venue}\n🗓  ${convConcertDate}\n`
+        console.log(`\n${output}`.magenta)
+        fs.appendFile('log.txt', `- ${command}\n${output}\n`, error => {
+          error ? console.log(error.red) : console.log(`Content added to log.txt`.gray)
+        })
       })
       .then(error => {
         if (error) console.log(error.red)
@@ -68,12 +68,11 @@ switch (command) {
       output signature for spotify-this-song
       color coded green for spotify
       ------------------------------------- */
-      output = `\n`
-      output += (`Artist(s): ${artists}\n`.green)
-      output += (`Song: ${song}\n`.green)
-      output += (`Album(s): ${album}\n`.green)
-      output += (`Preview URL: ${previewURL}\n`.green)
-      console.log(output)
+      output = `Artist(s): ${artists}\nSong: ${song}\nAlbum(s): ${album}\nPreview URL: ${previewURL}\n`
+      console.log(`\n${output}`.green)
+      fs.appendFile('log.txt', `- ${command}\n${output}\n`, error => {
+        error ? console.log(error.red) : console.log(`Content added to log.txt`.gray)
+      })
     }).then(error => {
       if (error) console.log(error.red)
     })
@@ -82,6 +81,7 @@ switch (command) {
     // format value to replace spaces with +
     // also forces value to lowercase
     // probably not necessary but URL will look 'cleaner'
+    if (!value) value = 'The Shining'
     value = value.replace(/ /g, '+').toLowerCase()
     queryURL = `https://www.omdbapi.com/?t=${value}&plot=short&apikey=${keys.omdb.apikey}`
     // query for the movie
@@ -95,16 +95,11 @@ switch (command) {
         output signature for movie-this
         color coded yellow for movie-this
         ------------------------------------- */
-        output = `\n`
-        output += (`🎞  ${response.data.Title} 🎞\n`.yellow)
-        output += (`Release Date: ${convReleasedDate}\n`.yellow)
-        output += (`IMDB Rating: ${response.data.Ratings[0].Value}\n`.yellow)
-        output += (`🍅 : ${response.data.Ratings[1].Value}\n`.yellow)
-        output += (`Country: ${response.data.Country}\n`.yellow)
-        output += (`Language: ${response.data.Language}`.yellow)
-        output += (`Plot: ${response.data.Plot}\n`.yellow)
-        output += (`🎭 : ${response.data.Actors}\n`.yellow)
-        console.log(output)
+        output = `🎞  ${response.data.Title}  🎞\nRelease Date: ${convReleasedDate}\nIMDB Rating: ${response.data.Ratings[0].Value}\n🍅 : ${response.data.Ratings[1].Value}\nCountry: ${response.data.Country}\nLanguage: ${response.data.Language}\nPlot: ${response.data.Plot}\n🎭 : ${response.data.Actors}\n`
+        console.log(`\n${output}`.yellow)
+        fs.appendFile('log.txt', `- ${command}\n${output}\n`, error => {
+          error ? console.log(error.red) : console.log(`Content added to log.txt`.gray)
+        })
       })
       .then(error => {
         if (error) console.log(error.red)
