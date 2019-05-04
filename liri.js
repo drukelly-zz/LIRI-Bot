@@ -6,8 +6,9 @@ const keys = require('./keys.js')
 const moment = require('moment')
 const Spotify = require('node-spotify-api')
 
+let node = process.argv
 let command = process.argv[2]
-let value = process.argv[3]
+let value = node.slice(3).join(' ')
 let queryURL, output
 
 // concert-this in a function
@@ -25,22 +26,24 @@ const concertThis = () => {
       get the value is 'name'
       ------------------------------ */
       let venue = response.data[0].venue['name']
-      // datetime
-      let datetime = response.data[0].datetime
-      // converted datetime for the event date
-      let convConcertDate = moment(new Date(datetime))
-      convConcertDate = convConcertDate.format('MM/DD/YYYY')
+      let eventdate = convertDate(response.data[0].datetime)
       /* --------------------------------
       output signature for concert-this
       color coded magenta for events
       -------------------------------- */
-      output = `🎫  ${value.toUpperCase()}\n🏟  ${venue}\n🗓  ${convConcertDate}\n`
+      output = `🎫  ${value.toUpperCase()}\n🏟  ${venue}\n🗓  ${eventdate}\n`
       console.log(`\n${output}`.magenta)
       logToFile()
     })
     .then(error => {
       if (error) console.log(`${error}`.red)
     })
+}
+
+// helper function to format date
+const convertDate = (date) => {
+  date = moment(new Date(date).toISOString()).format('MM/DD/YYYY')
+  return date
 }
 
 // do-what-it-says in a function
@@ -80,15 +83,12 @@ const movieThis = () => {
   // query for the movie
   axios.get(queryURL)
     .then(response => {
-      // convert ReleasedDate to standard ISO format
-      let convReleasedDate = moment(new Date(response.data.Released).toISOString())
-      // convert to a readable date format
-      convReleasedDate = convReleasedDate.format('ll')
+      let releasedDate = convertDate(response.data.Released)
       /* -------------------------------------
       output signature for movie-this
       color coded yellow for movie-this
       ------------------------------------- */
-      output = `🎞  ${response.data.Title} 🎞\nRelease Date: ${convReleasedDate}\nIMDB Rating: ${response.data.Ratings[0].Value}\n🍅 : ${response.data.Ratings[1].Value}\nCountry: ${response.data.Country}\nLanguage: ${response.data.Language}\nPlot: ${response.data.Plot}\n🎭 : ${response.data.Actors}\n`
+      output = `🎞  ${response.data.Title} 🎞\nRelease Date: ${releasedDate}\nIMDB Rating: ${response.data.Ratings[0].Value}\n🍅 : ${response.data.Ratings[1].Value}\nCountry: ${response.data.Country}\nLanguage: ${response.data.Language}\nPlot: ${response.data.Plot}\n🎭 : ${response.data.Actors}\n`
       console.log(`\n${output}`.yellow)
       logToFile()
     })

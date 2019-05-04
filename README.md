@@ -26,4 +26,4 @@ A `package.json` is included  with the necessary dependencies. Clone/download th
 - `do-what-it-says` References a text file: `random.txt`. This command can run any of the three commands listed above. For example, command/value structure is delimited by a comma, e.g. `movie-this,"Avengers Endgame"`
 
 ### Bug
-`concert-this` command yields an error output sporadically when placed inside the `random.txt` file. It can also produce an error when `do-what-it-says` doesn't 'like' the value associated with the command. 😖
+`concert-this` command yields an error when an artist or venue is 'undefined'. This happens when there isn't any upcoming event/venue for a particular artist 😖
